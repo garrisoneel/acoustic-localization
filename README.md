@@ -36,7 +36,7 @@ The issue will be audio synchronization.
 
 #### Synchronization
 
-Synchronizing the signals can be done in post as long as we tap the microphones to one another in pairs. 
+Synchronizing the signals can be done in post as long as we tap the microphones to one another in pairs.
 (tapping the mics together should give an instantaneous impulse to both, which can be used to align the time-series)
 Also the time-delay between microphones can also be a parameter that the estimator tries to estimate.
 
@@ -63,9 +63,6 @@ This relationship is mostly unknown (and may not have a pretty analytical form).
 
 Need a software controllable robot which can have a speaker mounted.
 Exact robot TBD. But it would be better if it were nonholonomic drive so that it has a model that's worth
-
-
-
 
 ## Stretch Goals
 
