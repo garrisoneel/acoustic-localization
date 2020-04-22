@@ -8,19 +8,20 @@ import math
 import csv
 
 samplesdir = os.path.abspath("./data")
-speed_of_sound = 343.0
-x_size = 65.5*0.0254
-y_size = 30.5*0.0254
+speed_of_sound = 343.0 #343.0
+x_size = (65.5*0.0254)
+y_size = (30.5*0.0254)
 resolution = 0.01
+boarder = 0.2
 
 max_dist = np.sqrt(x_size*x_size + y_size * y_size)
 
-x_shape = int(x_size/resolution)
-y_shape = int(y_size/resolution)
+x_shape = int((x_size + 2*boarder)/resolution)
+y_shape = int((y_size + 2*boarder)/resolution)
 
-predict_sigma = 10
+predict_sigma = 1.0
 
-update_sigma = 5
+update_sigma = 2
 
 data = []
 delays = []
@@ -34,7 +35,7 @@ class mic:
         self.y = y
         self.index = index
 
-mics = [mic(0,y_size,2),mic(0,0,0),mic(x_size,y_size,1),mic(x_size,0,3)]
+mics = [mic(boarder,y_size+boarder,2),mic(boarder,boarder,0),mic(x_size+boarder,y_size+boarder,1),mic(x_size+boarder,boarder,3)]
 
 def transform_pt(x,y,mic1,mic2):
     theta = np.arctan2(mic2.y - mic1.y, mic2.x - mic1.x)
@@ -84,22 +85,28 @@ def get_curve(mic1,mic2,delta):
 
     layer = np.zeros([x_shape,y_shape])
 
+
     delta_dist = delta*speed_of_sound
 
     d = math.sqrt( (mic1.x - mic2.x)*(mic1.x - mic2.x) + (mic1.y - mic2.y)*(mic1.y - mic2.y) )
 
+    #print(delta)
+
     if(abs(delta_dist) > d):
+        print("d")
         print(d)
         print(delta_dist)
         print(delta)
+        
         return None
 
     r0 = (d - delta_dist)*0.5
     c = 0
-    for i in range(0,10000):
 
-        r1 = max_dist*i/10000.0 + r0
-        r2 = max_dist*i/10000.0 + delta_dist + r0
+    for i in range(0,1000):
+
+        r1 = max_dist*i/1000.0 + r0
+        r2 = max_dist*i/1000.0 + delta_dist + r0
 
         x,a = circ_intersection(d,r1,r2)
     
@@ -162,29 +169,33 @@ def get_delta(i,time,m1_index,m2_index):
     return data[m2_index][t2_index] - data[m1_index][t1_index]
 
 def get_delta_from_delays(i,m1_index,m2_index):
-    d1 = 0.0
-    d2 = 0.0
+    d1 = 0
+    d2 = 0
+
 
     if(m1_index != 0):
         d1 = delays[m1_index][i]
     if(m2_index != 0):
         d2 = delays[m2_index][i]
 
+    output = (d2 - d1)#*0.5
+
+    if(m1_index == 0 or m2_index == 0):
+        output *= 1.0
     #print(d1)
     #print(d2)
 
-    return d2-d1
+    return output
 
 def update(old_field, i):
-    delta = 0.5
+    delta = 0.0
+    #order = [1,0,2,3]
     #time = data[0][i]
 
-    for j in range(0,len(mics)):
+    for j in range(0,len(mics)):        
         for k in range(j+1,len(mics)):
-        
-
-            m1 = mics[j]
-            m2 = mics[k]
+            m1 = mics[k]
+            m2 = mics[j]
 
             #print("j = %s" % j)
             #print("k = %s" % k)
@@ -199,7 +210,7 @@ def update(old_field, i):
                 old_field *= out_img
                 #plt.figure()
                 #plt.imshow(np.transpose(out_img),origin = 'lower',interpolation='none')
-                #plt.savefig(str(i) + '_' + str(j) +"-"+ str(k)+ '.png', bbox_inches='tight')
+                #plt.savefig('./images/' + str(i) + '_' + str(j) + '-' + str(k) + '.png', bbox_inches='tight')
                 #plt.close()
 
     s = np.sum(old_field)
@@ -247,11 +258,18 @@ def read_data_from_file():
             data.append([float(i) for i in row])
     pass
 
+offset = [0,-0.0047732426,-0.0020068027,-0.0045238095]
+
+#o = 0.01
+
 def read_delays_from_file():
     with open('delays.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        j = 0
         for row in  csv_reader:
-            delays.append([float(i) for i in row])
+            #print(o[j])
+            delays.append([(float(i) - offset[j]) for i in row])
+            j+=1
 
 
 def main():
@@ -279,6 +297,8 @@ def main():
         plt.imshow(np.transpose(field),origin = 'lower',interpolation='none')
         plt.savefig('./images/a' + str(i) + '.png', bbox_inches='tight')
         plt.close()
+
+        #field = np.ones([x_shape,y_shape])/(x_shape*y_shape)
     
     #plt.show()
 
