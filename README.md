@@ -7,6 +7,9 @@ Hopefully we will have a camera tracking solution implemented as well to provide
 
 Run 'pip2 install -r requirements.txt' for Python 2, or 'pip3 install -r requirements.txt' for Python 3 to install dependencies.
 
+## Presentation
+https://drive.google.com/a/tamu.edu/file/d/1zLjyWMKfdVg7FWdBLXXwj-kiouvOTOMo/view?usp=sharing
+
 ## Approach
 
 ### **Option A:** Amplitude
