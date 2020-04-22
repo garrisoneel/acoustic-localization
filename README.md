@@ -71,4 +71,4 @@ Exact robot TBD. But it would be better if it were nonholonomic drive so that it
 
 ## Installation
 
-Run 'pip2 install -r requirements.txt' for Python 2, or 'pip3 install -r requirements.txt' to install dependencies.
+Run 'pip2 install -r requirements.txt' for Python 2, or 'pip3 install -r requirements.txt' for Python 3 to install dependencies.
