@@ -5,3 +5,4 @@ numpy==1.17.4
 matplotlib==3.0.0
 opencv_python==3.4.3.18
 librosa==0.7.2
+astroquery==0.4
