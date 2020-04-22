@@ -3,6 +3,9 @@
 An attempt at 2D localization using a microphone array.
 The primary purpose will be to compare several estimators in order to evaluate their performance (accuracy, uncertainty, confidence, etc).
 Hopefully we will have a camera tracking solution implemented as well to provide a more accurate reference trajectory.
+## Installation
+
+Run 'pip2 install -r requirements.txt' for Python 2, or 'pip3 install -r requirements.txt' for Python 3 to install dependencies.
 
 ## Approach
 
@@ -14,7 +17,7 @@ Using a known frequency will allow filtering of noise for better response. Depen
 Total Uncertainty will be determined by the calibration/response functions gathered experimentally.
 Depending on the uncertainty of the amplitude<->distance function, and the amplitude<->angle function, we will know how accurate the system can be.
 
-### **Option 2:** Angry Bird
+### **Option B:** Angry Bird
 
 Impulse signals (low to moderate frequency chirping or clicking) can be easily detected and used to determine the arrival time of the signal to each microphone.
 It takes 3 microphones minimum to solve this version of the problem, which means we will need microphones other than the webcams, but thankfully no calibration is needed for this option.
@@ -69,6 +72,3 @@ Exact robot TBD. But it would be better if it were nonholonomic drive so that it
 - implement 2D localization for the same robot for comparison/ground truth
 - turn into real-time audio
 
-## Installation
-
-Run 'pip2 install -r requirements.txt' for Python 2, or 'pip3 install -r requirements.txt' for Python 3 to install dependencies.
