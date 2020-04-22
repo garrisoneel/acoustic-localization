@@ -1,0 +1,7 @@
+scipy==1.1.0
+pandas==0.23.4
+PyAudio==0.2.11
+numpy==1.17.4
+matplotlib==3.0.0
+opencv_python==3.4.3.18
+librosa==0.7.2
